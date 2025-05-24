@@ -33,7 +33,7 @@ export function ProductivityChart({ data }: ProductivityChartProps) {
       },
       yaxis: {
         labels: {
-          formatter: function(value: number) {
+          formatter: function (value: number) {
             return `${Math.round(value / 60)}h`;
           }
         }
@@ -59,7 +59,7 @@ export function ProductivityChart({ data }: ProductivityChartProps) {
       },
       tooltip: {
         y: {
-          formatter: function(value: number) {
+          formatter: function (value: number) {
             const hours = Math.floor(value / 60);
             const minutes = value % 60;
             return `${hours}h ${minutes}min`;
@@ -89,24 +89,29 @@ export function ProductivityChart({ data }: ProductivityChartProps) {
   React.useEffect(() => {
     const updateChartTheme = () => {
       const isDarkMode = document.documentElement.classList.contains('dark');
-      if (window.ApexCharts) {
-        window.ApexCharts.exec('productivity-chart', 'updateOptions', {
+
+      const win = window as any;
+
+      if (win.ApexCharts) {
+        win.ApexCharts.exec('productivity-chart', 'updateOptions', {
           theme: {
-            mode: isDarkMode ? 'dark' : 'light'
+            mode: isDarkMode ? 'dark' : 'light',
           },
           grid: {
-            borderColor: isDarkMode ? '#333' : '#f1f1f1'
+            borderColor: isDarkMode ? '#333' : '#f1f1f1',
           },
           xaxis: {
             labels: {
               style: {
-                colors: Array(7).fill(isDarkMode ? '#ccc' : '#888')
-              }
-            }
-          }
+                colors: Array(7).fill(isDarkMode ? '#ccc' : '#888'),
+              },
+            },
+          },
         }, false, true);
       }
     };
+
+
 
     // Set initial theme
     updateChartTheme();
@@ -130,7 +135,7 @@ export function ProductivityChart({ data }: ProductivityChartProps) {
         {typeof window !== 'undefined' && (
           <div className="w-full h-[300px]">
             <Chart
-              options={chartData.options}
+              options={chartData.options as any}
               series={chartData.series}
               type="area"
               height="100%"
